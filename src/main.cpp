@@ -27,6 +27,7 @@ int main(){
     GLFWwindow* window = glfwCreateWindow(800, 600, "Teste", NULL, NULL);
     if(window == NULL){
         std::cout << "Erro ao criar janela" << std::endl;
+        glfwTerminate();
         return -1;
     }
 
@@ -60,6 +61,9 @@ int main(){
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
+
+    
+    glfwTerminate();
 
     return 0;
 }
