@@ -1,13 +1,21 @@
 #include <iostream>
-#include <fstream>
-#include <math.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include "GameObj.h"
+#include "Game.h"
 
 
 int SCREEN_W = 800;
 int SCREEN_H = 600;
+
+int FPS = 60;
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
 
 int main(){
 
@@ -16,6 +24,7 @@ int main(){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     
+
     GLFWwindow* window = glfwCreateWindow(800, 600, "Teste", NULL, NULL);
     if(window == NULL){
         std::cout << "Erro ao criar janela" << std::endl;
@@ -24,49 +33,29 @@ int main(){
 
     glfwMakeContextCurrent(window);
 
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
     gladLoadGL();
 
     glViewport(0, 0, 800, 600);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, 0, 0, 800, 600, 0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    GameObj obj = {0.0f, 0.0f, 0.2f, GL_QUADS};
 
-    float angle = 0.0f;
+    GameObj objects[3] = {
+        {0.5f, 0.5f, 0.3f, GL_QUADS},
+        {-0.5f, -0.5f, 0.3f, GL_QUADS},
+        {0.8f, -0.5f, 0.3f, GL_QUADS},
+        
+    };
+
+    Game game = {window, objects};
+
     while(!glfwWindowShouldClose(window)){
-        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        angle = angle + 1.0f;
-
-        if(angle >= 360){
-            angle = 0.0f;
-        }
-
-        glPushMatrix();
-            glRotatef(angle, 1.0f, 0.0f, 0.0f);
-            glBegin(GL_TRIANGLES);
-                glVertex3f(0.0f, 0.5f, 0.0f);
-                glVertex3f(-0.5f, -0.5f, 0.0f);
-                glVertex3f(0.5f, -0.5f, 0.0f);
-            glEnd();
-        glPopMatrix();
-
-        glPushMatrix();
-        std::cout << angle << std::endl;
-            // glTranslatef(angle, 0.0f, 0.0f);
-            glRotatef(angle, 0.0f, 1.0f, 0.0f);
-            glBegin(GL_QUADS);
-                glVertex3f(-0.8f, -0.4f, 0.0f);
-                glColor3f(0.5f, 0.0f, 0.0f);
-                glVertex3f(-0.8f, -0.8f, 0.0f);
-                glColor3f(1.0f, 1.0f, 1.0f);
-                glVertex3f(-0.4f, -0.8f, 0.0f);
-                glVertex3f(-0.4f, -0.4f, 0.0f);
-            glEnd();
-        glPopMatrix();
+        
+        game.Draw();
+        game.Update();
 
         glFlush();
         glfwPollEvents();
