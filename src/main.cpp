@@ -24,7 +24,7 @@ int main(){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Teste", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", NULL, NULL);
     if(window == NULL){
         std::cout << "Erro ao criar janela" << std::endl;
         glfwTerminate();
