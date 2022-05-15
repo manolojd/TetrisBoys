@@ -13,7 +13,7 @@ class Game{
         GameObj* objects;
         GameObj player;
 
-        Game(GLFWwindow* window, GameObj objects[]);
+        Game(GLFWwindow* window, GameObj objects[], int objCount);
         void Draw(); // Graficos
         void Update(); // Logica
         void processInput();
